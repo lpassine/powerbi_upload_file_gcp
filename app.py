@@ -1,30 +1,31 @@
-from flask import Flask, render_template, request
 import os
+from flask import Flask, render_template, request
+from google.cloud import storage
 
-template_dir = os.path.abspath('templates')
-app = Flask(__name__, template_folder=template_dir)
+app = Flask(__name__)
 
+# Set the path to your Google Cloud Storage credentials JSON file
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/pb-integration-389120-e02e7b60859f.json"
 
-@app.route("/")
+@app.route('/')
 def home():
-    return "Welcome to CSV Upload"
+    return "Welcome to File Upload"
 
-@app.route("/upload", methods=["GET", "POST"])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    if request.method == "POST":
-        # Retrieve the uploaded file
-        csv_file = request.files["file"]
+    if request.method == 'POST':
+        # Get the uploaded file from the form
+        file = request.files['file']
 
-        # Save the file to a secure location
-        file_path = "/Users/larissapassine/Documents/Loreal/Projects Files/Luxe Forecast/" + csv_file.filename
-        csv_file.save(file_path)
+        # Upload the file to Google Cloud Storage
+        client = storage.Client()
+        bucket = client.get_bucket('power-bi-data-integration')  
+        blob = bucket.blob(file.filename)
+        blob.upload_from_file(file)
 
-        # Process the uploaded file (e.g., trigger script execution)
-
-        return "File uploaded successfully"
+        return "File uploaded successfully!"
 
     return render_template("upload.html")
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
