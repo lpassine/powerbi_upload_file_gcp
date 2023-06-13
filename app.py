@@ -27,5 +27,11 @@ def upload():
 
     return render_template("upload.html")
 
+# Add the following configuration for Google Cloud App Engine
+# to use the main() function as the entry point of the application.
+def main():
+    # Run the Flask app
+    app.run()
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    main()
