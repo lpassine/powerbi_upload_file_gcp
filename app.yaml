@@ -5,9 +5,13 @@ handlers:
 - url: /static
   static_dir: static
 
+- url: /upload
+  script: auto
+
 - url: /.*
   script: auto
 
 env_variables:
   # ... Your other environment variables ...
-  GUNICORN_CMD_ARGS: --bind=:${PORT} --workers=1 --threads=8 --timeout 0 app:app
+  GOOGLE_APPLICATION_CREDENTIALS: "config/pb-integration-389120-e02e7b60859f.json"
+  GUNICORN_CMD_ARGS: "--bind=:${PORT} --workers=1 --threads=8 --timeout 0 app:app"

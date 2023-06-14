@@ -5,10 +5,40 @@
 </head>
 <body>
   <h1>Upload XLSX File</h1>
-  <form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="file">
-    <input type="submit" value="Upload">
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input id="fileInput" type="file" name="file">
+    <input type="button" value="Upload" onclick="handleUpload()">
   </form>
+
+  <script>
+    function handleUpload() {
+      var fileInput = document.getElementById('fileInput');
+      var file = fileInput.files[0];
+      var formData = new FormData();
+
+      if (!file) {
+        return; // No file chosen, do not proceed with upload
+      }
+
+      formData.append('file', file);
+
+      fetch('https://pb-integration-389120.ew.r.appspot.com/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('File uploaded successfully');
+          window.location.reload();
+        } else {
+          console.error('File upload failed');
+        }
+      })
+      .catch(error => {
+        console.error('File upload failed:', error);
+      });
+    }
+  </script>
 </body>
 </html>
 
