@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Set the path to your Google Cloud Storage credentials JSON file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "config/pb-integration-389120-e02e7b60859f.json"
-os.environ['API_KEY'] = ''
+os.environ['API_KEY'] = 'KEY'
 
 @app.route('/')
 def home():
