@@ -1,0 +1,7 @@
+{
+  "name": "powerbi_upload_file_gcp",
+  "packageManager": "yarn@3.6.0",
+  "dependencies": {
+    "sprinkle-js": "^0.4.6"
+  }
+}
