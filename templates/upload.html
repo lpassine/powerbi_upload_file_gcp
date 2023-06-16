@@ -1,44 +1,49 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>File Upload</title>
-</head>
-<body>
-  <h1>Upload XLSX File</h1>
-  <form id="uploadForm" enctype="multipart/form-data">
-    <input id="fileInput" type="file" name="file">
-    <input type="button" value="Upload" onclick="handleUpload()">
-  </form>
-
-  <script>
-    function handleUpload() {
-      var fileInput = document.getElementById('fileInput');
-      var file = fileInput.files[0];
-      var formData = new FormData();
-
-      if (!file) {
-        return; // No file chosen, do not proceed with upload
-      }
-
-      formData.append('file', file);
-
-      fetch('https://pb-integration-389120.ew.r.appspot.com/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
+<html sandbox="allow-forms allow-scripts allow-modals allow-same-origin">
+   <head>
+      <title>File Upload</title>
+      <script language="JavaScript" type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+      <script language="JavaScript" type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+      <script language="JavaScript" type="text/javascript" src="https://cdn.jsdelivr.net/npm/sprinkle-js@0.4.6"></script>
+   </head>
+   <body>
+      <h1>Upload XLSX File</h1>
+      <form id="uploadForm" enctype="multipart/form-data" method="POST" onsubmit="handleUpload(event)">
+         <input id="fileInput" type="file" name="file">
+         <input type="submit" value="Upload">
+      </form>
+      <script>
+         function handleUpload(event) {
+           event.preventDefault(); 
+         
+           var fileInput = document.getElementById('fileInput');
+           var file = fileInput.files[0];
+         
+           if (!file) {
+             return; // No file chosen, do not proceed with upload
+           }
+         
+           var formData = new FormData();
+           formData.append('file', file);
+         
+           fetch('https://pb-integration-389120.ew.r.appspot.com/upload', {
+             method: 'POST',
+             credentials: "include",
+             body: formData
+           })
+           .then(response => {
+             if (response.ok) {
           console.log('File uploaded successfully');
           window.location.reload();
-        } else {
+         } else {
           console.error('File upload failed');
-        }
-      })
-      .catch(error => {
-        console.error('File upload failed:', error);
-      });
-    }
-  </script>
-</body>
+         }
+         })
+         .catch(error => {
+         console.error('File upload failed:', error);
+         });
+         }
+      </script>
+      <iframe src = "https://pb-integration-389120.ew.r.appspot.com/upload" sandbox="allow-forms allow-scripts allow-modals allow-same-origin"></iframe>
+   </body>
 </html>
-
